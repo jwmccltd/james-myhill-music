@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto+Condensed:wght@700&family=Salsa&family=Tektur&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lobster&family=Pacifico&display=swap');
+
+body {
+    font-family: 'Oswald', sans-serif;
+}
+
+h1.main-title {
+    font-size: 3rem;
+}
+
+li.nav-item {
+    font-size: 1.3rem;
+}
+
+h5 {
+    font-size: 1.3rem;
+}
+
+h1.white {
+    color: white;
+}
+
+.static-top h1 {
+    font-family: 'Lobster', sans-serif;
+    font-size: 2rem;
+    text-align: center;
+}

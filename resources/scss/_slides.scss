@@ -1,0 +1,11 @@
+.jwm-slides_text-animate h1 {
+    font-family: 'Lobster', sans-serif;
+    font-size: 3rem;
+}
+
+@include media-breakpoint-down(lg) {
+    .jwm-slides_text-animate h1 {
+        font-family: 'Lobster', sans-serif;
+        font-size: 2.5rem;
+    }
+}

@@ -1,0 +1,30 @@
+/* Styling for action button */
+.action-button {
+    background-color: transparent;
+    color: #36454F;
+    border: 2px solid #36454F;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 auto;
+    cursor: pointer;
+    margin-top: .5em;
+    opacity: 0;
+    transition-duration: 0.4s;
+  }
+
+.action-button.toggle {
+    opacity: 1;
+    transition: all 1s;
+}
+    
+/* Transition on button hover */
+.action-button:hover {
+    background-color: #36454F;
+    color: white;
+}
+
+.jwm-slides_button {
+    font-size: 1.2em !important;
+}
