@@ -5,4 +5,5 @@ return [
     'client_secret' => env('SOUNDCLOUD_CLIENT_SECRET'),
     'username' => env('SOUNDCLOUD_EMAIL'),
     'password' => env('SOUNDCLOUD_PASSWORD'),
+    'redirect_uri' => env('SOUNDCLOUD_REDIRECT_URI')
 ];
