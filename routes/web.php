@@ -45,7 +45,7 @@ Route::get('/soundcloud-auth', function(Request $request) {
 
     // Ձեր config
     $clientId = config('soundcloud.client_id');
-    $clientSecret = config('soundcloud.client_id');
+    $clientSecret = config('soundcloud.client_secret');
     $redirectUri = config('soundcloud.redirect_uri');
 
     // Values from callback
