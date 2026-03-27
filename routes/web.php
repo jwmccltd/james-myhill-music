@@ -19,18 +19,15 @@ use App\Http\Controllers\PlaylistController;
 Route::get('/', [HomeController::class, 'home']);
 Route::get('/playlists',[PlaylistController::class, 'playlists']);
 Route::get('/soundcloud', function() {
+      $params = [
+            "client_id" => config('soundcloud.client_id'),
+            "client_secret" => config('soundcloud.client_secret'),
+            "grant_type" => 'client_credentials',
+        ];
+
     $clientId = config('soundcloud.client_id');
-    $redirectUri = urlencode("https://jamesmyhill.net/soundcloud-auth");
-    $scope = "non-expiring"; 
 
-    $auth_url = "https://soundcloud.com/connect?" . http_build_query([
-        "client_id" => $clientId,
-        "redirect_uri" => $redirectUri,
-        "response_type" => "code",
-        "scope" => $scope
-    ]);
-
-    return redirect($auth_url);
+    return redirect("https://secure.soundcloud.com/authorize?client_id=$clientId&redirect_uri=soundcloud-auth&response_type=code&code_challenge=CODE_CHALLENGE&code_challenge_method=S256&state=STATE&display=popup");
 });
 
 Route::get('/soundcloud-auth', function() {
