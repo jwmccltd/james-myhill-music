@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlaylistController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,5 @@ Route::get('/soundcloud', function() {
 });
 
 Route::get('/soundcloud-auth', function() {
-    dd('Hit');
+    dd(Request::get('code'));
 });
