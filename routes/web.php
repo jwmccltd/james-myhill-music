@@ -33,6 +33,6 @@ Route::get('/soundcloud', function() {
     return redirect("https://secure.soundcloud.com/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&code_challenge=CODE_CHALLENGE&code_challenge_method=S256&state=STATE&display=popup");
 });
 
-Route::get('/soundcloud-auth', function() {
-    dd(Request::get('code'));
+Route::get('/soundcloud-auth', function(Request $request) {
+    dd($request->all());
 });
