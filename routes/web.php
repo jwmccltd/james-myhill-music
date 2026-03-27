@@ -27,7 +27,7 @@ Route::get('/soundcloud', function() {
 
     $clientId = config('soundcloud.client_id');
 
-    return redirect("https://secure.soundcloud.com/authorize?client_id=$clientId&redirect_uri=soundcloud-auth&response_type=code&code_challenge=CODE_CHALLENGE&code_challenge_method=S256&state=STATE&display=popup");
+    return redirect("https://secure.soundcloud.com/authorize?client_id=$clientId&redirect_uri=https://jamesmyhill.net/soundcloud-auth&response_type=code&code_challenge=CODE_CHALLENGE&code_challenge_method=S256&state=STATE&display=popup");
 });
 
 Route::get('/soundcloud-auth', function($request) {
