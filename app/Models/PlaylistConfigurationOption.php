@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class PlaylistConfigurationOption extends Model
+{
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'playlist_configuration_options';
+
+    public $timestamps = false;
+
+    /**
+     * Get the fields associated with the playlist.
+     */
+    public function fields(): HasOne
+    {
+        return $this->hasOne(PlaylistConfigurationOptionField::class, 'option_id');
+    }
+
+    /**
+     * Get the config associated with the playlist.
+     */
+    public function config(): HasOne
+    {
+        return $this->hasOne(PlaylistConfiguration::class, 'option_id');
+    }
+}

@@ -8,22 +8,25 @@
                 <h5>Composer</h5>
             </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand d-none d-lg-block" href="#">
+        <a class="navbar-brand d-none d-lg-block" href="/#">
             <h1 class="mb-0 main-title">JAMES MYHILL</h1>
             <h5>Composer</h5>
         </a>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#" id="intro">Intro</a>
+            <a class="nav-link {{ Request::path() !== 'playlists' ? 'active': '' }}" aria-current="page" href="/#" id="intro">Intro</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" id="goto-latest">Latest</a>
+                <a class="nav-link" href="/#" id="goto-latest">Latest</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" id="goto-selected-compositions">Selected Compositions</a>
+                <a class="nav-link" href="/#" id="goto-selected-compositions">Selected Compositions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" id="goto-portfolio">Portfolio / Credits</a>
+                <a class="nav-link" href="/#" id="goto-portfolio">Portfolio / Credits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::path() === 'playlists' ? 'active': '' }}" href="/playlists">Curated Playlists</a>
             </li>
         </ul>
         </div>
