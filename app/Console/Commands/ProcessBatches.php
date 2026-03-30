@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\ProcessPlaylistPromotionBatch;
+use File;
 
 class ProcessBatches extends Command
 {
@@ -34,6 +35,13 @@ class ProcessBatches extends Command
                 'source' => config('app.url') . '/' . $batch->batch_video_file_path,
                 'caption' => 'James Myhill Music Playlists jamesmyhill.net/playlists'
             ]);
+
+            $batch->delete();
+
+            $filePath = storage_path("/app/public/{$batch->batch_video_file_path}");
+            if (!File::exists($filePath)) {
+                File::delete($filePath);
+            }
         }
     }
 }

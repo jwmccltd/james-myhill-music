@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Facebook\Facebook;
 use App\Models\InstagramTokenCred;
 
 class UploadInstagramReel extends Command
