@@ -5,11 +5,12 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\PlaylistTrack;
 use App\Models\Playlist;
+use App\Services\SoundcloudService;
 use App\Services\DataService;
 
 class GenerateSoundcloudPlaylists extends Command
 {
-    public function __construct(protected DataService $dataService) {
+    public function __construct(protected DataService $dataService, protected SoundcloudService $soundcloudService) {
         // Constructor
         parent::__construct();
     }
@@ -33,7 +34,7 @@ class GenerateSoundcloudPlaylists extends Command
      */
     public function handle()
     {
-        $url = "https://api.soundcloud.com/oauth2/token";
+        $url = config('soundcloud.token_url');
 
         $params = [
             "client_id" => config('soundcloud.client_id'),
@@ -53,6 +54,8 @@ class GenerateSoundcloudPlaylists extends Command
 
         $data = json_decode($response, true);
 
+        $this->soundcloudService->saveRefreshToken($data['refresh_token']);
+
         $accessToken = $data['access_token'];
 
         $playlists = Playlist::whereHas('promotion', function ($query) {
@@ -67,52 +70,58 @@ class GenerateSoundcloudPlaylists extends Command
             }
 
             $trackIds = [];
-            $tracks = PlaylistTrack::where('playlist_id', $playlist['playlist_id'])
+            $tracks = PlaylistTrack::where('playlist_id', $playlist['id'])
                 ->select('artist_name', 'name')
                 ->get();
 
-                foreach ($tracks as $track) {
-                    $artist = $track['artist_name'];
-                    $track  = $track['name'];
+            $tracksUrl = config('soundcloud.tracks_url');
 
-                    // Build query
-                    $query = urlencode("$artist $track");
+            foreach ($tracks as $trackObj) {
+                
+                $artist = $trackObj['artist_name'];
+                $track  = $trackObj['name'];
 
-                    $url = "https://api.soundcloud.com/tracks?q=$query";
+                // Build query
+                $query = urlencode("$artist $track");
 
-                    // Initialize cURL
-                    $ch = curl_init($url);
+                $url = "{$tracksUrl}?q={$query}";
 
-                    // Set options
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        "Accept: application/json; charset=utf-8",
-                        "Authorization: OAuth $accessToken"
-                    ]);
+                // Initialize cURL
+                $ch = curl_init($url);
 
-                    // Execute request
-                    $response = curl_exec($ch);
+                // Set options
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    "Accept: application/json; charset=utf-8",
+                    "Authorization: OAuth $accessToken"
+                ]);
 
-                    // Error handling
-                    if (curl_errno($ch)) {
-                        die("cURL error: " . curl_error($ch));
-                    }
+                // Execute request
+                $response = curl_exec($ch);
 
-                    curl_close($ch);
-
-                    // Decode JSON
-                    $data = json_decode($response, true);
-
-                    if (isset($data[0])) {
-                        $trackIds[] = $data[0]['id'];
-                    }
+                // Error handling
+                if (curl_errno($ch)) {
+                    die("cURL error: " . curl_error($ch));
                 }
+
+                curl_close($ch);
+
+                // Decode JSON
+                $data = json_decode($response, true);
+
+                // Can only rely on exact artist name matches
+                if (isset($data[0]) && $data[0]['metadata_artist'] === $artist) {
+                    $trackIds[] = $data[0]['id'];
+                    $trackObj->soundcloud_track_id = $data[0]['id'];
+                    $trackObj->save();
+                }
+            }
 
             $trackIds = array_unique($trackIds);
 
             $trackIdsGrouped = [];
             foreach ($trackIds as $id) {
-                $trackIdsGrouped[] = ['id' => $id];
+                $trackIdsGrouped[] = ['urn' => "soundcloud:tracks:$id"];
             }
 
             // Build request body (as PHP array)
@@ -129,20 +138,30 @@ class GenerateSoundcloudPlaylists extends Command
             $jsonData = json_encode($body);
 
             // Endpoint
-            $url = "https://api.soundcloud.com/playlists";
+            $url = config('soundcloud.playlist_url');;
+
+            if (!empty($playlist->soundcloud_playlist_urn)) {
+                $url = "$url/{$playlist->soundcloud_playlist_urn}";
+            }
 
             // Initialize cURL
             $ch = curl_init($url);
 
+            $accessToken = $this->soundcloudService->getSetAccessToken();
+
             // Set options
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
+            if (!empty($playlist->soundcloud_playlist_urn)) {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            } else {
+                curl_setopt($ch, CURLOPT_POST, true);
+            }
+         
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Accept: application/json; charset=utf-8",
                 "Content-Type: application/json",
-                "Authorization: OAuth $accessToken",
-                "Content-Length: " . strlen($jsonData)
+                "Authorization: OAuth $accessToken"
             ]);
 
             // Execute request
@@ -156,13 +175,13 @@ class GenerateSoundcloudPlaylists extends Command
             curl_close($ch);
 
             // Decode response
-            $data = json_decode($response, true);
+            $data = json_decode($response, true);  
 
-            // Output result
-            print_r($data);
+            if (isset($data['urn'])) {
+                $playlist->soundcloud_playlist_urn = $data['urn'];
+                $playlist->save();
+            }
+
         }
-
-       
-
     }
 }

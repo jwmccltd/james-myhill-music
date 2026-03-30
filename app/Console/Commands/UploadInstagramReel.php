@@ -13,7 +13,7 @@ class UploadInstagramReel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:upload-instagram-reel {source}';
+    protected $signature = 'app:upload-instagram-reel {source} {caption}';
 
     /**
      * The console command description.
@@ -35,10 +35,11 @@ class UploadInstagramReel extends Command
         $accessToken = $token->long_token;
         $igUserId = config('instagram.user_id');
 
-        $videoUrl = "https://jamesmyhill.net/video/jamesmyhill/output.mp4";
-        $caption = "James Myhill discography posted from API 🚀";
+        $videoUrl = $this->argument('source');
+        $caption = $this->argument('caption');
 
-        $url = "https://graph.facebook.com/v19.0/$igUserId/media";
+        $urlGraphAPI = config('instagram.graph_api_endpoint');
+        $url = "{$urlGraphAPI}/{$igUserId}/media";
 
         $params = [
             "media_type" => "REELS",
@@ -67,14 +68,14 @@ class UploadInstagramReel extends Command
         // Poll until video is processed
         do {
             sleep(5);
-            $statusResponse = $this->getRequest("https://graph.facebook.com/v17.0/$creationId?fields=status_code&access_token=$accessToken");
+            $statusResponse = $this->getRequest("{$urlGraphAPI}/{$creationId}?fields=status_code&access_token={$accessToken}");
             $status = $statusResponse['status_code'] ?? '';
             echo "Current status: $status\n";
             $attempts++;
         } while ($status === 'IN_PROGRESS' && $attempts < $maxAttempts);
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/v17.0/$igUserId/media_publish");
+        curl_setopt($ch, CURLOPT_URL, "{$urlGraphAPI}/{$igUserId}/media_publish");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
             'creation_id' => $creationId,
@@ -85,7 +86,8 @@ class UploadInstagramReel extends Command
         curl_close($ch);
 
         $publishData = json_decode($response, true);
-        print_r($publishData);
+
+        return 'success';
     }
 
     private function getRequest($url) {

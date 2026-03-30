@@ -20,7 +20,7 @@ class Playlist extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'playlist_link_id', 'user_id', 'label'
+        'playlist_link_id', 'user_id', 'label', 'soundcloud_playlist_urn'
     ];
 
     /**

@@ -56,7 +56,7 @@ class ProcessInstagramReel extends Command
 
         ProcessPlaylistPromotionBatch::create([
             'playlist_id' => $this->argument('playlistId') ?? null,
-            'batch_video_file_path' => "$publicPath/$videoName.mp4",        
+            'batch_video_file_path' => "$folder/$videoName.mp4",        
         ]);
     }
 }
