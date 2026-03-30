@@ -39,7 +39,7 @@ class ProcessBatches extends Command
             $batch->delete();
 
             $filePath = storage_path("/app/public/{$batch->batch_video_file_path}");
-            if (!File::exists($filePath)) {
+            if (File::exists($filePath)) {
                 File::delete($filePath);
             }
         }
