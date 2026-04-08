@@ -34,7 +34,7 @@ class ProcessBatches extends Command
         foreach ($batches AS $batch) {            
             // Successful, so call the function to generate the video.
             $this->call('app:upload-instagram-reel', [
-                'source' => config('app.url') . '/' . $batch->batch_video_file_path,
+                'source' => config('app.url') . '/storage/' . $batch->batch_video_file_path,
                 'caption' => 'James Myhill Music Playlists jamesmyhill.net/playlists'
             ]);
 
