@@ -73,6 +73,10 @@ class UploadInstagramReel extends Command
             $attempts++;
         } while ($status === 'IN_PROGRESS' && $attempts < $maxAttempts);
 
+        if ($status === 'error') {
+            return $status;
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "{$urlGraphAPI}/{$igUserId}/media_publish");
         curl_setopt($ch, CURLOPT_POST, 1);
