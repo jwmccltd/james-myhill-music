@@ -38,12 +38,12 @@ class ProcessBatches extends Command
                 'caption' => 'James Myhill Music Playlists jamesmyhill.net/playlists'
             ]);
 
-            /*$batch->delete();
+            $batch->delete();
 
             $filePath = storage_path("/app/public/{$batch->batch_video_file_path}");
             if (File::exists($filePath)) {
                 File::delete($filePath);
-            }*/
+            }
         }
     }
 }
