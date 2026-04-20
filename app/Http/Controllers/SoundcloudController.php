@@ -87,5 +87,6 @@ class SoundcloudController extends Controller
             $soundCloudAuth->soundcloud_refresh_token = $data['refresh_token'];
             $soundCloudAuth->expires_at = Carbon::now()->addSeconds($data['expires_in']);
             $soundCloudAuth->save();
-    }
+        }
+    }   
 }
