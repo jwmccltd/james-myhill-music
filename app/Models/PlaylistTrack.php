@@ -19,7 +19,7 @@ class PlaylistTrack extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'playlist_id', 'track_id', 'image_url', 'name', 'album_name', 'added_at', 'processed_at',
+        'playlist_id', 'track_id', 'image_url', 'name', 'album_name', 'added_at', 'processed_at', 'soundcloud_track_id',
     ];
 
 }
