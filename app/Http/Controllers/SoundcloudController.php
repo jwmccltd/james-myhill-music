@@ -81,7 +81,7 @@ class SoundcloudController extends Controller
         $data = json_decode($response, true);
 
         if (isset($data['access_token'])) {
-            SoundCloudAuth::delete();
+            SoundCloudAuth::truncate();
             $soundCloudAuth = new SoundCloudAuth();
             $soundCloudAuth->soundcloud_access_token = $data['access_token'];
             $soundCloudAuth->soundcloud_refresh_token = $data['refresh_token'];
