@@ -80,15 +80,12 @@ class SoundcloudController extends Controller
         // Decode JSON response
         $data = json_decode($response, true);
 
-        print_r($data);
-
         if (isset($data['access_token'])) {
             SoundCloudAuth::truncate();
             $soundCloudAuth = new SoundCloudAuth();
             $soundCloudAuth->soundcloud_access_token = $data['access_token'];
             $soundCloudAuth->soundcloud_refresh_token = $data['refresh_token'];
-            $soundCloudAuth->expires_at = Carbon::now()->addMinutes(59);
-        }
+            $soundCloudAuth->expires_at = Carbon::now()->addSeconds($data['expires_in']);
+            $soundCloudAuth->save();
     }
-
 }

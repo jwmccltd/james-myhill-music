@@ -15,4 +15,8 @@ class SoundcloudAuth extends Model
      * @var string
      */
     protected $table = 'soundcloud_auth';
+
+    protected $fillable = [
+        'soundcloud_access_token', 'soundcloud_refresh_token', 'expires_at'
+    ];
 }
