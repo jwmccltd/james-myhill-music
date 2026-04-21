@@ -19,6 +19,7 @@ class BuildReelVideo extends Command
 {
     const IN_THE_ELECTRONICA_ZONE = '3B5O5ZcPfw2hAtLliVfvnu';
     const DARK_CINEMATIC = '60ZAiKbFEkqukCJHpO12dj';
+    const ALT_ELECTRIC = '4BAeIqII4WGepTDXgr5Bv8';
 
     /**
      * The name and signature of the console command.
@@ -120,6 +121,7 @@ class BuildReelVideo extends Command
             [
                 self::IN_THE_ELECTRONICA_ZONE,
                 self::DARK_CINEMATIC,
+                self::ALT_ELECTRIC
             ]);
     }
 }
