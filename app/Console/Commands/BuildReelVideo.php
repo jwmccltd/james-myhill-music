@@ -68,7 +68,7 @@ class BuildReelVideo extends Command
                     ->get();
 
                 if (sizeof($tracks) > 2) {
-                    $filenameNumber = 2;
+                    $filenameNumber = 1;
 
                     $filesToFlush = [];
                     foreach ($tracks as $track) {
