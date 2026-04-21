@@ -56,6 +56,7 @@
                 <div class="col-12 col-md-8">
                     <div>
                         <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4BAeIqII4WGepTDXgr5Bv8?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2225434970&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jwmyhill" title="James Myhill" target="_blank" style="color: #cccccc; text-decoration: none;">James Myhill</a> · <a href="https://soundcloud.com/jwmyhill/sets/alt-electric" title="Alt Electric" target="_blank" style="color: #cccccc; text-decoration: none;">Alt Electric</a></div>    
                     </div>
                 </div>
             </div>

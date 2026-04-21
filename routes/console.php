@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Schedule;
 |
 */
 
-/*Schedule::command('app:refresh-instagram-token')->daily();
 Schedule::command('app:run-config')->dailyAt('22:00');
 Schedule::command('app:generate-soundcloud-playlists')->dailyAt('23:00');
+Schedule::command('app:refresh-instagram-token')->dailyAt('05:00');
 Schedule::command('app:build-reel-video')->dailyAt('06:00');
-Schedule::command('app:process-batches')->dailyAt('08:00');*/
+Schedule::command('app:process-batches')->dailyAt('08:00');
