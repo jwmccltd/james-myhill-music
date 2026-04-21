@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\InstagramTokenCred;
+use App\Models\ProcessPlaylistPromotionBatch;
+use File;
 
 class UploadInstagramReel extends Command
 {
@@ -12,7 +14,7 @@ class UploadInstagramReel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:upload-instagram-reel {source} {caption}';
+    protected $signature = 'app:upload-instagram-reel {source} {caption} {batchId?}';
 
     /**
      * The console command description.
@@ -73,8 +75,9 @@ class UploadInstagramReel extends Command
             $attempts++;
         } while ($status === 'IN_PROGRESS' && $attempts < $maxAttempts);
 
-        if ($status === 'error') {
-            return $status;
+        if (strtolower($status) === 'error') {
+            echo "Error preparing reel";
+            return;
         }
 
         $ch = curl_init();
@@ -89,6 +92,17 @@ class UploadInstagramReel extends Command
         curl_close($ch);
 
         $publishData = json_decode($response, true);
+
+        if ($this->argument('batchId')) {
+            $batch = ProcessPlaylistPromotionBatch::find($this->argument('batchId'));
+
+            $filePath = storage_path("/app/public/{$batch->batch_video_file_path}");
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+
+            $batch->delete();
+        }       
 
         return 'success';
     }

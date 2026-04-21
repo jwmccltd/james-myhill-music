@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\ProcessPlaylistPromotionBatch;
-use File;
 
 class ProcessBatches extends Command
 {
@@ -35,15 +34,9 @@ class ProcessBatches extends Command
             // Successful, so call the function to generate the video.
             $this->call('app:upload-instagram-reel', [
                 'source' => config('app.url') . '/storage/' . $batch->batch_video_file_path,
-                'caption' => 'James Myhill Music Playlists jamesmyhill.net/playlists'
+                'caption' => 'James Myhill Music Playlists jamesmyhill.net/playlists',
+                'batchId' => $batch->id,
             ]);
-
-            $batch->delete();
-
-            $filePath = storage_path("/app/public/{$batch->batch_video_file_path}");
-            if (File::exists($filePath)) {
-                File::delete($filePath);
-            }
         }
     }
 }
