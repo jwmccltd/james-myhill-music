@@ -18,6 +18,7 @@ use Str;
 class BuildReelVideo extends Command
 {
     const IN_THE_ELECTRONICA_ZONE = '3B5O5ZcPfw2hAtLliVfvnu';
+    const DARK_CINEMATIC = '60ZAiKbFEkqukCJHpO12dj';
 
     /**
      * The name and signature of the console command.
@@ -117,7 +118,8 @@ class BuildReelVideo extends Command
     private function isValidPLaylistLink($playlistLinkId) {
         return in_array($playlistLinkId,
             [
-                self::IN_THE_ELECTRONICA_ZONE
+                self::IN_THE_ELECTRONICA_ZONE,
+                self::DARK_CINEMATIC,
             ]);
     }
 }
