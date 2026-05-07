@@ -38,23 +38,23 @@ class ProcessInstagramReel extends Command
 
         $videoName = $this->argument('outputVideoName');
 
-        $cmd =
-        <<<CMD
+        $cmd = <<<CMD
             ffmpeg \
             -loop 1 -t 5 -i "$path/title.jpg" \
             -loop 1 -t 3 -i "$path/logo.jpg" \
             -framerate 1/5 -start_number 1 -i "$path/%03d.jpg" \
             -i "$path/track.mp3" \
             -filter_complex "\
-            [0:v]scale=1080:1080,format=yuv420p,setsar=1[v0]; \
-            [1:v]scale=1080:1080,format=yuv420p,setsar=1[v1]; \
-            [2:v]scale=1080:1080,format=yuv420p,setsar=1,fps=30[v2]; \
+            [0:v]scale=1080:1080,format=yuv420p,setsar=1,fps=30[v0]; \
+            [1:v]scale=1080:1080,format=yuv420p,setsar=1,fps=30[v1]; \
+            [2:v]scale=1080:1080,format=yuv420p,setsar=1[v2]; \
             [v0][v1][v2]concat=n=3:v=1:a=0[v]" \
             -map "[v]" -map 3:a \
-            -c:v libx264 -crf 25 -pix_fmt yuv420p \
+            -c:v libx264 -r 30 -crf 25 -pix_fmt yuv420p \
             -c:a aac -shortest \
             "$publicPath/$videoName.mp4"
         CMD;
+
         exec($cmd);
 
         ProcessPlaylistPromotionBatch::create([
