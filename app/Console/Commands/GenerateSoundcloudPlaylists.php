@@ -171,8 +171,6 @@ class GenerateSoundcloudPlaylists extends Command
             // Execute request
             $response = curl_exec($ch);
 
-            print_r($response);
-
             // Error handling
             if (curl_errno($ch)) {
                 die("cURL error: " . curl_error($ch));
