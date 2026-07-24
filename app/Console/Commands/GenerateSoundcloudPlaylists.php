@@ -142,7 +142,7 @@ class GenerateSoundcloudPlaylists extends Command
             $jsonData = json_encode($body);
 
             // Endpoint
-            $url = config('soundcloud.playlist_url');;
+            $url = config('soundcloud.playlist_url');
 
             if (!empty($playlist->soundcloud_playlist_urn)) {
                 $url = "$url/{$playlist->soundcloud_playlist_urn}";
@@ -170,6 +170,8 @@ class GenerateSoundcloudPlaylists extends Command
 
             // Execute request
             $response = curl_exec($ch);
+
+            print_r($response);
 
             // Error handling
             if (curl_errno($ch)) {

@@ -10,14 +10,14 @@ class SoundcloudService {
      * @param bool    $forceAccessTokenRefresh Force refresh of access token.
      * @return string|null
      */
-    public function getSetAccessToken()
+    public function getSetAccessToken($forceRefresh = false)
     {
         $soundCloudAuth = SoundcloudAuth::first();
 
         $clientId = config('soundcloud.client_id');
         $clientSecret = config('soundcloud.client_secret');
 
-        if (empty($soundCloudAuth->expires_at) || Carbon::now()->gte($soundCloudAuth->expires_at)) {
+        if (empty($soundCloudAuth->expires_at) || Carbon::now()->gte($soundCloudAuth->expires_at) || $forceRefresh) {
 
             // Prepare POST data
             $postFields = http_build_query([

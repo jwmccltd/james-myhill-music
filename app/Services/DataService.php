@@ -152,7 +152,7 @@ class DataService
                 return $data ?? null;
         }
         if ($this->cache === true) {
-            $this->cacheService->setCacheItem($identifier, json_encode($returnResults), now()->addDays(1));
+            //$this->cacheService->setCacheItem($identifier, json_encode($returnResults), now()->addDays(1));
         }
 
         return $returnResults;
