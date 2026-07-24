@@ -64,7 +64,11 @@ class GenerateSoundcloudPlaylists extends Command
         
         foreach ($playlists as $playlist) {
             $playlistInfo = $this->dataService->getData('playlist-data', 'playlists/' . $playlist->playlist_link_id, $playlist->user_id, 'name, description');
-            
+
+            if (isset($playlistInfo['error']['message'])) {
+                die($playlistInfo['error']['message']);
+            }
+
             if (!isset($playlistInfo['name'])) {
                 continue;
             }
