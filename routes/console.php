@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('app:run-config')->hourlyAt(5);
 Schedule::command('app:generate-soundcloud-playlists')->hourlyAt(45);
-Schedule::command('php artisan app:refresh-tokens')->everyThirtyMinutes();
+Schedule::command('app:refresh-tokens')->everyThirtyMinutes();
 #Schedule::command('app:refresh-instagram-token')->dailyAt('05:00');
 #Schedule::command('app:build-reel-video')->dailyAt('06:00');
 #Schedule::command('app:process-batches')->dailyAt('08:00');
