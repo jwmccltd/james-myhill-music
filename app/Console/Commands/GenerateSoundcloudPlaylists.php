@@ -7,6 +7,7 @@ use App\Models\PlaylistTrack;
 use App\Models\Playlist;
 use App\Services\SoundcloudService;
 use App\Services\DataService;
+use Illuminate\Support\Facades\Log;
 
 class GenerateSoundcloudPlaylists extends Command
 {
@@ -73,6 +74,8 @@ class GenerateSoundcloudPlaylists extends Command
                 continue;
             }
 
+            Log::info('Handling ' . $playlistInfo['name']);
+
             $trackIds = [];
             $tracks = PlaylistTrack::where('playlist_id', $playlist['id'])
                 ->select('artist_name', 'name')
@@ -115,6 +118,8 @@ class GenerateSoundcloudPlaylists extends Command
 
                 // Can only rely on exact artist name matches
                 if (isset($data[0]) && $data[0]['metadata_artist'] === $artist) {
+                    Log::info("Found artist and track: $artist $track");
+
                     $trackIds[] = $data[0]['id'];
                     $trackObj->soundcloud_track_id = $data[0]['id'];
                     $trackObj->save();
@@ -170,6 +175,8 @@ class GenerateSoundcloudPlaylists extends Command
 
             // Execute request
             $response = curl_exec($ch);
+
+            Log::info($response);
 
             // Error handling
             if (curl_errno($ch)) {
