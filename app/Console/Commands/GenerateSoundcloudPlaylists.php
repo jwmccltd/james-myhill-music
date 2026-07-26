@@ -35,29 +35,7 @@ class GenerateSoundcloudPlaylists extends Command
      */
     public function handle()
     {
-        $url = config('soundcloud.token_url');
-
-        $params = [
-            "client_id" => config('soundcloud.client_id'),
-            "client_secret" => config('soundcloud.client_secret'),
-            "grant_type" => 'client_credentials',
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $data = json_decode($response, true);
-
-        $this->soundcloudService->saveRefreshToken($data['refresh_token']);
-
-        $accessToken = $data['access_token'];
+        $accessToken = $this->soundcloudService->getSetAccessToken();
 
         $playlists = Playlist::whereHas('promotion', function ($query) {
             return $query->where('active', 1);
@@ -155,8 +133,6 @@ class GenerateSoundcloudPlaylists extends Command
 
             // Initialize cURL
             $ch = curl_init($url);
-
-            $accessToken = $this->soundcloudService->getSetAccessToken();
 
             // Set options
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
