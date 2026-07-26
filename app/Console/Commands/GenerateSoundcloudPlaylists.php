@@ -101,6 +101,8 @@ class GenerateSoundcloudPlaylists extends Command
                     $trackIds[] = $data[0]['id'];
                     $trackObj->soundcloud_track_id = $data[0]['id'];
                     $trackObj->save();
+                } else {
+                    Log::info("Could not find artist and track: $artist $track");
                 }
             }
 
