@@ -103,7 +103,7 @@ class GenerateSoundcloudPlaylists extends Command
                     $trackObj->save();
                 } else {
                     Log::info("Could not find artist and track: $artist $track");
-                    Log::info("Data is " . print_r($data));
+                    Log::info("Data is " . print_r($data, true));
                 }
             }
 
