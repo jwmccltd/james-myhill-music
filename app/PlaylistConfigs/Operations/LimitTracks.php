@@ -36,12 +36,12 @@ trait LimitTracks
             return;
         }
 
-        $delTracks['tracks'] = [];
+        $delTracks['items'] = [];
         $trackListURIs = [];
         foreach ($this->selectedPlaylistData['all_tracks'] as $playlistTrack) {
-            $delTracks['tracks'][] = ['uri' => $playlistTrack['track']['uri']];
+            $delTracks['items'][] = ['uri' => $playlistTrack['track']['uri']];
             $trackListURIs[] = $playlistTrack['track']['uri'];
-            if (sizeof($delTracks['tracks']) === $toRemove) {
+            if (sizeof($delTracks['items']) === $toRemove) {
                 break;
             }
         }
