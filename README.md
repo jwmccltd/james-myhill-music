@@ -1,6 +1,6 @@
 # James Myhill Music
 
-Application for James Myhill music including release info, portfolio of work etc. The system also has tools to manage playlists via the Spotify API as well as a mechanism to mirror these playlists in Soundcloud and integration to automate Instagram Reels.
+Application for James Myhill music including release info, portfolio of work etc. The system also has tools to manage playlists via the Spotify API as well as a mechanism to mirror these playlists in Soundcloud and integration to automate Instagram Reels. The project uses the npm package "@jwmccltd/slideshow-with-text-transition" by the same author to run the slideshow component on page load.
 
 ## Stack
 

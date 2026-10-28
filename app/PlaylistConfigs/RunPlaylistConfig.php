@@ -8,7 +8,6 @@ use App\Models\PlaylistConfigurationSchedule;
 use App\Models\Playlist;
 use App\Jobs\DeDuplicator;
 use App\Jobs\TrackLimiter;
-use App\Jobs\UnplayableRemover;
 use Illuminate\Support\Facades\Bus;
 use Carbon\Carbon;
 use App\Jobs\SynchronizePlaylistTracks;
@@ -117,14 +116,6 @@ class RunPlaylistConfig
 
         foreach ($playlistConfigs as $config) {
             switch ($config['component']) {
-                /*case 'UnplayableRemover':
-                    $jobs[] = new UnplayableRemover(
-                        $this->dataService,
-                        array_merge($config['config'], $globalConfig['config']),
-                        $playlistLinkId,
-                        $userId
-                    );
-                    break;*/
                 case 'DeDuplicator':
                     $jobs[] = new DeDuplicator(
                         $this->dataService,
