@@ -1,67 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# James Myhill Music
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application for James Myhill music including release info, portfolio of work etc. The system also has tools to manage playlists via the Spotify API as well as a mechanism to mirror these playlists in Soundcloud and integration to automate Instagram Reels.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.1+ and Laravel 11
+- MySQL (or another Laravel-supported database)
+- Vue 3, Vite, Sass, and Bootstrap 5
+- Spotify and SoundCloud integrations; optional Instagram Graph API tooling
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.1 or newer with the extensions required by Laravel
+- Composer
+- Node.js and npm
+- MySQL
 
-## Learning Laravel
+## Local development
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Install PHP dependencies:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+   ```sh
+   composer install
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Create `.env` and generate the application key:
 
-## Laravel Sponsors
+   ```sh
+   touch .env
+   php artisan key:generate
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. Configure the database in `.env`, then apply migrations:
 
-### Premium Partners
+   ```sh
+   php artisan migrate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. Install frontend dependencies and start Vite:
 
-## Contributing
+   ```sh
+   npm install
+   npm run dev
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. In a separate terminal, serve Laravel:
 
-## Code of Conduct
+   ```sh
+   php artisan serve
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The site is available at `http://localhost:8000`. For production assets, run `npm run build` and configure the web server document root to `public/`.
 
-## Security Vulnerabilities
+## Routes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `/` — homepage with featured release, selected compositions, and portfolio
+- `/playlists` — Spotify and SoundCloud playlist embeds
+- `/soundcloud` and `/soundcloud-auth` — SoundCloud connection and callback routes
 
-## License
+## Integrations and scheduled work
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# james-myhill-music
+Spotify and SoundCloud credentials are read from environment variables via `config/spotify.php` and `config/soundcloud.php`. Playlist automation also depends on database records for users, playlists, credentials, and playlist configuration. Instagram reel commands use the optional values in `config/instagram.php` and stored Instagram token credentials. Keep secrets in `.env`; do not commit credentials.
+
+Laravel's scheduled tasks are defined in `routes/console.php`:
+
+- `app:run-config` runs hourly at 5 minutes past the hour.
+- `app:generate-soundcloud-playlists` runs hourly at 45 minutes past the hour.
+- `app:refresh-tokens` runs every 30 minutes.
+
+To run the scheduler in production, configure the host's cron to invoke Laravel's scheduler once per minute:
+
+```cron
+* * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Other available Artisan commands cover playlist configuration, token refresh, playlist generation, and Instagram reel creation/upload. Run `php artisan list` for the current command list. Some commands require external service credentials, persisted tokens, media files, or `ffmpeg`.
+
+## Docker
+
+`docker-compose.yml` defines a Laravel Sail development container. After configuring the environment and installing the Sail dependencies, use Sail's `up` command to start it. The compose file maps the application to `APP_PORT` (default `80`) and Vite to `VITE_PORT` (default `5173`).
+
+## Project layout
+
+- `app/` — Laravel controllers, services, models, jobs, and console commands
+- `resources/views/` — Blade pages and layouts
+- `resources/js/` and `resources/scss/` — Vue components and frontend styles
+- `public/` — public assets and Laravel's web entry point
+- `routes/` — web, API, console, and channel routes
+- `database/migrations/` — database schema migrations
+

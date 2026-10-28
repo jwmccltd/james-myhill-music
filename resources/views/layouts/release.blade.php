@@ -17,18 +17,6 @@
                 </div>
             </div>
         </div>
-        <!--<div class="row mt-2">
-            <div class="col-12 col-md-6 mb-2">
-                <p>Feature</p>
-                <h2>The Composer's Journey</h2>
-
-                <p>My entry for Orchestral Tools - Berlin Free Orchestra scoring competition.</p>
-                <p><a href="https://www.orchestraltools.com/bfo-scoring-competition?srsltid=AfmBOopyrziMQulgL8xoFIlw8_09QE8WZD2zT5LOKwkEDYYSJ-yI5tXC" target="_blank">More info</a></p>
-            </div>
-            <div class="col-12 col-md-6">
-                <iframe width="100%" height="500" src="https://www.youtube.com/embed/l53qlNy6ZD4?si=amFGZam71AQScZXQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-        </div>-->
         <div class="row mt-5">
             <script src="https://apis.google.com/js/platform.js"></script>
             <div class="col-12">
